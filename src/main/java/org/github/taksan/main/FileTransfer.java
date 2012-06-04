@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.github.taksan.FileTransferArguments;
 import org.github.taksan.FileTransferArgumentsFactory;
+import org.github.taksan.x11.XDoTool;
 
 import com.skype.SkypeClient;
 import com.skype.SkypeException;
@@ -32,20 +33,7 @@ public class FileTransfer {
 	private static void executeFileTransfer(
 			FileTransferArguments transferArguments)
 			throws InterruptedException, IOException {
-		activateFileTransferWindow();
-		typeFileNameInFileTransfer(transferArguments.fileToTransfer.getName());
-	}
-
-	private static void typeFileNameInFileTransfer(String fileName)
-			throws InterruptedException, IOException {
-		String typeFileNameAndPressEnter = "type " + fileName;		
-		Runtime.getRuntime().exec("xdotool " + typeFileNameAndPressEnter).waitFor();
-		Runtime.getRuntime().exec("xdotool key Return");
-	}
-
-	private static void activateFileTransferWindow()
-			throws InterruptedException, IOException {
-		String activateWindow = "xdotool search --onlyvisible gabriel-take search --onlyvisible send windowactivate ";
-		Runtime.getRuntime().exec(activateWindow).waitFor();
+		XDoTool.activateWindowGivenPatterns(transferArguments.targetUserId, "send");
+		XDoTool.writeln(transferArguments.fileToTransfer.getName());
 	}
 }
