@@ -1,8 +1,5 @@
 package org.github.taksan.x11;
 
-import java.io.IOException;
-
-
 public class XDoTool {
 
 	public static void activateWindowGivenPatterns(
@@ -11,16 +8,11 @@ public class XDoTool {
 		runOrCry(activateWindow);
 	}
 
-	public static void writeln(String textToType)
-			throws InterruptedException, IOException {
+	public static void writeln(String textToType){
 		runOrCry("xdotool type --delay 1ms '" + textToType + "'");
 		runOrCry("xdotool key Return");
 	}
 	
-	public static String quoteToType(String textToType) {
-		return textToType.replace("\"","\\\"");
-	}
-
 	private static String buildSearchQuery(String... patterns) {
 		return "xdotool " + new SearchPatternBuilder(patterns).build();
 	}

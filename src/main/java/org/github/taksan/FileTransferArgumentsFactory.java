@@ -23,26 +23,11 @@ public class FileTransferArgumentsFactory {
 		exitIfWrongArguments(args);
 		String targetUserId = findValidSkypeId(args[0]);
 		List<File> files = new ArrayList<File>();
-		File previousFile = null;
 		for(int i=1; i < args.length; i++) {
 			File validFile = getExistingFileOrCry(args[i]);
 			files.add(validFile);
-			ensureFileShareCommonRootOrCry(previousFile, validFile);
-			previousFile = validFile;
 		}
 		return new FileTransferArguments(targetUserId, files.toArray(new File[0]));
-	}
-
-	private void ensureFileShareCommonRootOrCry(File previousFile,
-			File validFile) {
-		if (previousFile != null) {
-			if (!previousFile.getParent().equals(validFile.getParent())) {
-				String msg = String.format("%s and %s have different roots.",
-						previousFile.getAbsolutePath(),
-						validFile.getAbsolutePath());
-				throw new FilesWithDifferentRootsNotAllowedException(msg);
-			}
-		}
 	}
 
 	private File getExistingFileOrCry(String filepath) {

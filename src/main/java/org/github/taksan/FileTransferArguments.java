@@ -8,9 +8,12 @@ public class FileTransferArguments {
 	public final File[] filesToTransfer;
 	
 	public FileTransferArguments(String targetUserId, File [] validFiles) {
-		super();
 		this.targetUserId = targetUserId;
 		this.filesToTransfer = validFiles;
+	}
+
+	public File getBasePath() {
+		return this.filesToTransfer[0].getParentFile();
 	}
 
 }

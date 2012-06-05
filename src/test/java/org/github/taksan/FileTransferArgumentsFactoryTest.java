@@ -53,18 +53,6 @@ public class FileTransferArgumentsFactoryTest {
 	}
 	
 	@Test
-	public void onFilesWithDifferentRoots_ShouldThrowException()
-	{
-		try {
-			subject.parse("full name", "/root1/relative/1","/root2/relative/2");
-			Assert.fail("Should throw exception");
-		}catch(FilesWithDifferentRootsNotAllowedException ex) {
-			assertEquals("/root1/relative/1 and /root2/relative/2 have different roots.", 
-					ex.getMessage());
-		}
-	}
-	
-	@Test
 	public void onNonExistingFile_ShouldThrowException() {
 		FileSystem mockFs = new FileSystem() {
 			@Override
