@@ -16,24 +16,38 @@ public class FileTransfer {
 	}
 	
 	public static void main(String[] args) throws SkypeException, InterruptedException, IOException {
-		FileTransferArguments transferArguments = new FileTransferArgumentsFactory().parse(args);
+		FileTransferArguments transferArguments = getArgumentsOrExitOnError(args);
 		
 		openSkypeFileTransferWindow(transferArguments);
 		executeFileTransfer(transferArguments);
 	}
 
+	private static FileTransferArguments getArgumentsOrExitOnError(String[] args) {
+		try {
+			return new FileTransferArgumentsFactory().parse(args);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			System.exit(-1);
+		}
+		return null;
+	}
+
 	private static void openSkypeFileTransferWindow(
 			FileTransferArguments transferArguments) throws SkypeException,
 			InterruptedException {
-		File cwd = transferArguments.fileToTransfer.getParentFile();
-		SkypeClient.showFileTransferWindow(transferArguments.targetUserId, cwd);
-		Thread.sleep(100);
+		File[] filesToTransfer = transferArguments.filesToTransfer;
+		for (File file : filesToTransfer) {
+			File cwd = file.getParentFile();
+			SkypeClient.showFileTransferWindow(transferArguments.targetUserId, cwd);
+			Thread.sleep(100);
+		}
 	}
 
 	private static void executeFileTransfer(
 			FileTransferArguments transferArguments)
 			throws InterruptedException, IOException {
 		XDoTool.activateWindowGivenPatterns(transferArguments.targetUserId, "send");
-		XDoTool.writeln(transferArguments.fileToTransfer.getName());
+		String fmtFiles = new SkypeTransferListFormatter().format(transferArguments.filesToTransfer);
+		XDoTool.writeln(fmtFiles);
 	}
 }

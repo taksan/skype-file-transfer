@@ -1,8 +1,8 @@
 package org.github.taksan;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileTransferArgumentsFactory {
@@ -22,8 +22,27 @@ public class FileTransferArgumentsFactory {
 	public FileTransferArguments parse(String... args) {
 		exitIfWrongArguments(args);
 		String targetUserId = findValidSkypeId(args[0]);
-		File validFile = getExistingFileOrCry(args[1]);
-		return new FileTransferArguments(targetUserId, validFile);
+		List<File> files = new ArrayList<File>();
+		File previousFile = null;
+		for(int i=1; i < args.length; i++) {
+			File validFile = getExistingFileOrCry(args[i]);
+			files.add(validFile);
+			ensureFileShareCommonRootOrCry(previousFile, validFile);
+			previousFile = validFile;
+		}
+		return new FileTransferArguments(targetUserId, files.toArray(new File[0]));
+	}
+
+	private void ensureFileShareCommonRootOrCry(File previousFile,
+			File validFile) {
+		if (previousFile != null) {
+			if (!previousFile.getParent().equals(validFile.getParent())) {
+				String msg = String.format("%s and %s have different roots.",
+						previousFile.getAbsolutePath(),
+						validFile.getAbsolutePath());
+				throw new FilesWithDifferentRootsNotAllowedException(msg);
+			}
+		}
 	}
 
 	private File getExistingFileOrCry(String filepath) {
@@ -31,7 +50,7 @@ public class FileTransferArgumentsFactory {
 			File validFile = new File(filepath).getCanonicalFile();
 			if (fileSystem.exists(validFile))
 				return validFile;
-			throw new FileNotFoundException("File " + validFile.getAbsolutePath() + " not found");
+			throw new FileNotFoundRuntimeException("File " + validFile.getAbsolutePath() + " not found");
 		} catch (IOException e) {
 			throw new IllegalArgumentException(e);
 		}
@@ -52,7 +71,7 @@ public class FileTransferArgumentsFactory {
 	}
 
 	private static void exitIfWrongArguments(String[] args) {
-		if (args.length != 2) {
+		if (args.length < 2) {
 			System.err.println("Usage : <target user skypeid or fullname> <file to transfer>");
 			throw new IllegalArgumentException();
 		}

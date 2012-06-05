@@ -5,12 +5,12 @@ import java.io.File;
 public class FileTransferArguments {
 
 	public final String targetUserId;
-	public final File fileToTransfer;
+	public final File[] filesToTransfer;
 	
-	public FileTransferArguments(String targetUserId, File validFile) {
+	public FileTransferArguments(String targetUserId, File [] validFiles) {
 		super();
 		this.targetUserId = targetUserId;
-		this.fileToTransfer = validFile;
+		this.filesToTransfer = validFiles;
 	}
 
 }
