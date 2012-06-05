@@ -1,4 +1,4 @@
-package org.github.taksan;
+package org.github.taksan.transfer;
 
 @SuppressWarnings("serial")
 public class FileNotFoundRuntimeException extends RuntimeException {

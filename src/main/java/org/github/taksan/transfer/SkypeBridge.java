@@ -1,4 +1,4 @@
-package org.github.taksan;
+package org.github.taksan.transfer;
 
 import java.util.List;
 

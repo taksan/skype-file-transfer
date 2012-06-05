@@ -2,8 +2,9 @@ package org.github.taksan.main;
 
 import java.io.IOException;
 
-import org.github.taksan.FileTransferArguments;
-import org.github.taksan.FileTransferArgumentsFactory;
+import org.github.taksan.transfer.FileTransferArguments;
+import org.github.taksan.transfer.FileTransferArgumentsFactory;
+import org.github.taksan.transfer.FileTransferExecution;
 
 import com.skype.SkypeException;
 

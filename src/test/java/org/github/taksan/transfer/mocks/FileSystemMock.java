@@ -1,8 +1,8 @@
-package org.github.taksan.mocks;
+package org.github.taksan.transfer.mocks;
 
 import java.io.File;
 
-import org.github.taksan.FileSystem;
+import org.github.taksan.transfer.FileSystem;
 
 public class FileSystemMock implements FileSystem {
 

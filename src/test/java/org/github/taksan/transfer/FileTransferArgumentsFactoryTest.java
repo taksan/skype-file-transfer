@@ -1,4 +1,4 @@
-package org.github.taksan;
+package org.github.taksan.transfer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,8 +7,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.github.taksan.mocks.FileSystemMock;
-import org.github.taksan.mocks.SkypeBridgeMock;
+import org.github.taksan.transfer.FileNotFoundRuntimeException;
+import org.github.taksan.transfer.FileSystem;
+import org.github.taksan.transfer.FileTransferArguments;
+import org.github.taksan.transfer.FileTransferArgumentsFactory;
+import org.github.taksan.transfer.FriendAdapter;
+import org.github.taksan.transfer.SkypeBridge;
+import org.github.taksan.transfer.mocks.FileSystemMock;
+import org.github.taksan.transfer.mocks.SkypeBridgeMock;
 import org.junit.Assert;
 import org.junit.Test;
 

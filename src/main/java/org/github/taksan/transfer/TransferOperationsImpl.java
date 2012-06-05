@@ -1,4 +1,4 @@
-package org.github.taksan.main;
+package org.github.taksan.transfer;
 
 import java.io.File;
 

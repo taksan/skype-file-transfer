@@ -1,6 +1,5 @@
-package org.github.taksan.main;
+package org.github.taksan.transfer;
 
-import org.github.taksan.FileTransferArguments;
 
 public class FileTransferExecution {
 

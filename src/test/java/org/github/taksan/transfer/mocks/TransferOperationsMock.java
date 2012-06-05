@@ -1,8 +1,10 @@
-package org.github.taksan.main;
+package org.github.taksan.transfer.mocks;
 
 import java.io.File;
 
-class TransferOperationsMock implements
+import org.github.taksan.transfer.TransferOperations;
+
+public class TransferOperationsMock implements
 		TransferOperations {
 	public final StringBuilder operationsResult = new StringBuilder();
 

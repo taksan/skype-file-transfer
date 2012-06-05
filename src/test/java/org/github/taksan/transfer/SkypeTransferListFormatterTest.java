@@ -1,9 +1,10 @@
-package org.github.taksan.main;
+package org.github.taksan.transfer;
 
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
+import org.github.taksan.transfer.SkypeTransferListFormatter;
 import org.junit.Test;
 
 public class SkypeTransferListFormatterTest { 
