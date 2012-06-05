@@ -7,19 +7,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.github.taksan.transfer.FileNotFoundRuntimeException;
-import org.github.taksan.transfer.FileSystem;
-import org.github.taksan.transfer.FileTransferArguments;
-import org.github.taksan.transfer.FileTransferArgumentsFactory;
-import org.github.taksan.transfer.FriendAdapter;
-import org.github.taksan.transfer.SkypeBridge;
 import org.github.taksan.transfer.mocks.FileSystemMock;
 import org.github.taksan.transfer.mocks.SkypeBridgeMock;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class FileTransferArgumentsFactoryTest { 
-	FileSystem fileSystem = new FileSystemMock();
+	FileSystemMock fileSystem = new FileSystemMock();
 	SkypeBridgeMock skypeBridge = new SkypeBridgeMock();
 	FileTransferArgumentsFactory subject = new FileTransferArgumentsFactory(skypeBridge, fileSystem);
 	
@@ -59,11 +53,33 @@ public class FileTransferArgumentsFactoryTest {
 	}
 	
 	@Test
+	public void onSpecifiedDir_ShouldGenerateAListOfFilesFromDir()
+	{
+		fileSystem.addDirAndFiles("/fakeroot/adir", new String[]{"1","2","3"});
+		fileSystem.addDirAndFiles("/fakeroot/adir/3", new String[]{"1","2","3"});
+		
+		FileTransferArguments args = subject.parse("full name", "/fakeroot/adir");
+		String actual = StringUtils.join(args.filesToTransfer,"\n");
+		Assert.assertEquals(
+				"/fakeroot/adir/1\n" +
+				"/fakeroot/adir/2", 
+				actual);
+	}
+	
+	@Test
 	public void onNonExistingFile_ShouldThrowException() {
 		FileSystem mockFs = new FileSystem() {
 			@Override
 			public boolean exists(File validFile) {
 				return false;
+			}
+			@Override
+			public boolean isDir(File validFile) {
+				throw new RuntimeException("NOT IMPLEMENTED");
+			}
+			@Override
+			public List<File> listFiles(File validFile) {
+				throw new RuntimeException("NOT IMPLEMENTED");
 			}
 		};
 		FileTransferArgumentsFactory subject = new FileTransferArgumentsFactory(skypeBridge, mockFs);

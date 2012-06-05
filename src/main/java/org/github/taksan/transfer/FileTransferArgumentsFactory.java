@@ -25,9 +25,21 @@ public class FileTransferArgumentsFactory {
 		List<File> files = new ArrayList<File>();
 		for(int i=1; i < args.length; i++) {
 			File validFile = getExistingFileOrCry(args[i]);
-			files.add(validFile);
+			if (!fileSystem.isDir(validFile)){
+				files.add(validFile);
+			}
+			addDirFiles(files, validFile);
 		}
 		return new FileTransferArguments(targetUserId, files.toArray(new File[0]));
+	}
+
+	private void addDirFiles(List<File> files, File validFile) {
+		List<File> filesToAdd = fileSystem.listFiles(validFile);
+		for (File file : filesToAdd) {
+			if (fileSystem.isDir(file))
+				continue;
+			files.add(file);
+		}
 	}
 
 	private File getExistingFileOrCry(String filepath) {
